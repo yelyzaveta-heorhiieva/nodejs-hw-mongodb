@@ -2,9 +2,11 @@
   "name": "nodejs-hw-mongodb",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "type": "module",
+  "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint src/**/*.js",
+    "start": "node ./src/index.js",
     "dev": "nodemon src/index.js"
   },
   "repository": {
@@ -14,7 +16,6 @@
   "keywords": [],
   "author": "Yelyzaveta Heorhiieva <heorhiieva.y@gmail.com>",
   "license": "ISC",
-  "type": "commonjs",
   "bugs": {
     "url": "https://github.com/yelyzaveta-heorhiieva/nodejs-hw-mongodb/issues"
   },
@@ -23,9 +24,14 @@
     "@eslint/js": "^9.23.0",
     "eslint": "^9.23.0",
     "globals": "^16.0.0",
-    "nodemon": "^3.1.9"
+    "nodemon": "^3.1.9",
+    "pino-pretty": "^13.0.0"
   },
   "dependencies": {
-    "express": "^4.21.2"
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongoose": "^8.12.2",
+    "pino-http": "^10.4.0"
   }
 }
