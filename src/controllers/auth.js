@@ -24,9 +24,7 @@ const setupSession = (res, session) => {
 };
 
 export const loginUserController = async (req, res) => {
-  if (req.cookies.sessionId) {
-    throw createHttpError(403, "To log in as a different user, log out first.")
-  }
+
   const session = await loginUser(req.body);
 
   setupSession(res, session);
