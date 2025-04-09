@@ -1,7 +1,7 @@
 import { ContactsCollection } from '../db/models/contact.js';
-import createHttpError from 'http-errors';
 import { calculatePaginationData } from '../utils/calculatePaginationData.js';
 import { SORT_ORDER } from '../constants/index.js';
+import { addPhoto } from '../utils/addPhoto.js';
 
 export const getAllContacts = async ({
   page = 1,
@@ -50,25 +50,30 @@ export const getContactById = async (contactId, userId ) => {
 };
 
 export const createContact = async (payload) => {
+  const userId = payload.user._id;
+  const photo = await addPhoto(payload);
   const contact = await ContactsCollection.create({
-    userId: payload.user._id,
-    ...payload.body
+    userId,
+    ...photo,
+    ...payload.body,
   });
   return contact;
 };
 
-export const updateContact = async (contactId, userId, payload, options = {}) => {
-
-  if (!Object.keys(payload).length) {
-    throw createHttpError(404, 'Payload is empty');
-  }
+export const updateContact = async (payload, options = {}) => {
+  const { contactId } = payload.params;
+  const userId = payload.user._id;
+  const photo = await addPhoto(payload);
 
   const rawResult = await ContactsCollection.findOneAndUpdate(
     {
       _id: contactId,
       userId,
     },
-    payload,
+    {
+      ...payload.body,
+      ...photo,
+    },
     {
       new: true,
       includeResultMetadata: true,
