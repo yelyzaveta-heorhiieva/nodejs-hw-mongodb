@@ -1,0 +1,17 @@
+tags:
+  - Auth
+summary: Logout user
+operationId: logoutUser
+description: 'Logot user by sessionId from cookis'
+security:
+  - sessionAuth: []
+parameters:
+  - in: cookie
+    name: sessionId
+    schema:
+      type: string
+      description: 'Session id, used to identify the user session.'
+      example: '65e4decdd286b30065d54af9'
+responses:
+  '204':
+    description: 'Logout user. No content'
