@@ -46,6 +46,11 @@ responses:
               example: Successfully registered a user!
             data:
               type: object
+              example: {
+                _id: 65e4decdd286b30065d54af9,
+                name: 'John Doe',
+                email: "john@example.com"
+              }
               $ref: '../../components/schemas/user.yaml'
   '409':
     $ref: '../../components/responses/409.yaml'
