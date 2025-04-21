@@ -6,7 +6,22 @@ info:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   description:
-    <опис вашого додатку>
+    Contact Book API is a backend service that allows users to manage personal contact information securely.
+
+    It includes full authentication and authorization functionality using Bearer access tokens,
+    as well as a password reset flow via email.
+
+   - 🔐 **Authentication**
+      - User registration and login
+      - Authentication via Bearer access token
+      - Refresh tokens for prolonged sessions
+      - Secure password reset via email with a JWT token
+      - Password change functionality
+
+    - 📇 **Contact Management**
+      - Create, read, update, delete (CRUD) contacts
+      - Each contact is user-specific and isolated per account
+      - Search and filter contacts
 tags:
   - name: Contacts
     description: Operations about contacts.
@@ -40,6 +55,12 @@ paths:
   /auth/logout:
     post:
       $ref: ../swagger/paths/auth/logout.yaml
+  /auth/send-reset-email:
+    post:
+      $ref: ../swagger/paths/auth/send-reset-email.yaml
+  /auth/reset-pwd:
+    post:
+      $ref: ../swagger/paths/auth/reset-pwd.yaml
 components:
   securitySchemes:
     bearerAuth:

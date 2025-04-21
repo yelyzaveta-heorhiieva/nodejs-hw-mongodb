@@ -7,7 +7,7 @@
       "name": "Apache 2.0",
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "description": "<опис вашого додатку>"
+    "description": "Contact Book API is a backend service that allows users to manage personal contact information securely.\nIt includes full authentication and authorization functionality using Bearer access tokens, as well as a password reset flow via email.\n- 🔐 **Authentication** - User registration and login - Authentication via Bearer access token - Refresh tokens for prolonged sessions - Secure password reset via email with a JWT token - Password change functionality\n- 📇 **Contact Management** - Create, read, update, delete (CRUD) contacts - Each contact is user-specific and isolated per account - Search and filter contacts"
   },
   "servers": [
     {
@@ -705,6 +705,153 @@
         "responses": {
           "204": {
             "description": "Logout user. No content"
+          }
+        }
+      }
+    },
+    "/auth/send-reset-email": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Send email to reset password",
+        "operationId": "sendResetEmail",
+        "description": "Sends a password reset email to the provided address.  The email contains a reset link with a JWT token as a query parameter. The token can be used to verify the user's identity during password reset.",
+        "security": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email"
+                ],
+                "properties": {
+                  "email": {
+                    "description": "User's email",
+                    "type": "string",
+                    "example": "john@example.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Send reset email",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Reset password email was successfully sent!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "Empty object since no additional data is returned.",
+                      "example": {}
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          }
+        },
+        "x-notes": {
+          "reset_link_format": "https://yourapp.com/reset-password?token=JWT_TOKEN_HERE",
+          "token_details": {
+            "type": "JWT",
+            "purpose": "Used to authorize password reset action",
+            "expires_in": "5 minutes"
+          }
+        }
+      }
+    },
+    "/auth/reset-pwd": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Reset password",
+        "operationId": "resetPwd",
+        "description": "Resets the user's password using a JWT token received via email. The token must be sent in the request body along with the new password.",
+        "security": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "password",
+                  "token"
+                ],
+                "properties": {
+                  "password": {
+                    "description": "User's password",
+                    "type": "string",
+                    "example": "john12345"
+                  },
+                  "token": {
+                    "description": "JWT token",
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Password successfully reset",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Password has been successfully reset."
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "Empty object since no additional data is returned.",
+                      "example": {}
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
           }
         }
       }
